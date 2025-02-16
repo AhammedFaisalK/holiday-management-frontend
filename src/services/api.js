@@ -1,17 +1,19 @@
 import axios from 'axios';
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+const API_BASE_URL = 'http://localhost:8000/api/v1';
+
+const holidayApi = axios.create({
+  baseURL: API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 });
 
-export const fetchHolidays = async (params) => {
+export const getHolidays = async (params) => {
   try {
-    const { data } = await api.get('/holidays/', { params });
-    return data;
+    const response = await holidayApi.get('/holidays/', { params });
+    return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Failed to fetch holidays');
+    throw error.response?.data || error.message;
   }
 };
